@@ -16,6 +16,8 @@ public class Match extends Runnable {
 
     public Match(ArrayList<Player> players) { //pass in the two players for the match
         this.players = players;
+        player1 = players.get(0);
+        player2 = players.get(1);
     }
 
     @Override
