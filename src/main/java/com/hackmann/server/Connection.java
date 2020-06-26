@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.hackmann.packets.Event;
-import com.hackmann.player.*;
 
 public class Connection implements Runnable{
 	

@@ -13,6 +13,6 @@ public class PlayerLeave implements Event {
     @Override
     public void run(Player player){
         System.out.println("Player: " + player.getConnection().id + " has been disconnected!");
-        player.getConnection().close();
+        player.disconnect();
     }
 }

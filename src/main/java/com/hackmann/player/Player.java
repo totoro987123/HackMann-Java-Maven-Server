@@ -1,10 +1,12 @@
 package com.hackmann.player;
 
 import com.hackmann.server.*;
+import com.hackmann.game.*;
 
 public class Player {
 
     private int score = 0;
+    private PlayerState state = PlayerState.Lobby;
     private String username = "";
     private Connection connection = null; //server id and socket
 
@@ -32,7 +34,15 @@ public class Player {
         return this.connection;
     }
 
+    public void joinGame(){
+        this.state = PlayerState.Pending;
+        MatchMaker.matchMaker.addPlayerToQueue(this);
+    }
+
     public void disconnect() {
         this.connection.close();
+        if (this.state == PlayerState.Pending) {
+            MatchMaker.matchMaker.removePlayer(this);
+        }
     }
 }
