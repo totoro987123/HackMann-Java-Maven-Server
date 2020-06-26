@@ -1,8 +1,8 @@
 package com.hackmann.packets;
 
-import com.hackmann.server.*;
+import com.hackmann.player.*;
 
 public abstract interface Event {
 
-    public abstract void run(Connection connection);
+    public abstract void run(Player player);
 }

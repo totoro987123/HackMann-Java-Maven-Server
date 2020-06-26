@@ -27,6 +27,11 @@ public class Player {
     public int getScore() {
         return this.score;
     }
+
+    public Connection getConnection(){
+        return this.connection;
+    }
+
     public void disconnect() {
         this.connection.close();
     }

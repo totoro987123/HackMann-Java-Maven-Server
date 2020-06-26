@@ -1,5 +1,7 @@
 package com.hackmann.server;
 
+import com.hackmann.game.*;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,6 +12,8 @@ public class Server implements Runnable{
 	private ServerSocket serverSocket;
 	private boolean running = false;
 	private int id = 0;
+
+	private MatchMaker matchMaker;
 	
 	public Server(int port) {
 		this.port = port;
@@ -19,10 +23,13 @@ public class Server implements Runnable{
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
+
+		this.matchMaker = new MatchMaker();
 	}
 	
 	public void start() {
 		new Thread(this).start();
+		new Thread(this.matchMaker).start();
 	}
 
 	@Override
@@ -50,6 +57,7 @@ public class Server implements Runnable{
 	
 	public void shutdown() {
 		this.running = false;
+		this.matchMaker.stop();
 		
 		try {
 			serverSocket.close();

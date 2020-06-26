@@ -1,6 +1,6 @@
 package com.hackmann.packets;
 
-import com.hackmann.server.*;
+import com.hackmann.player.Player;
 
 public class PlayerJoin implements Event {
     
@@ -11,8 +11,7 @@ public class PlayerJoin implements Event {
     }
 
     @Override
-    public void run(Connection connection){
-        System.out.println("Connection: " + connection.id + " has connected!");
-        ConnectionHandler.connections.put(connection.id, connection);
+    public void run(Player player){
+        System.out.println("Player: " + player.getConnection().id + " has connected!");
     }
 }
