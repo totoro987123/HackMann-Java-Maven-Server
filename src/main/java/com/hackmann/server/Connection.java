@@ -1,19 +1,23 @@
 package com.hackmann.server;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import com.hackmann.packets.Event;
 
 public class Connection implements Runnable{
 	
 	private Socket socket;
-	private ObjectInputStream in;
+	private BufferedInputStream in;
 	private ObjectOutputStream out;
+	private Serializer serializer;
 	
 	public int id;
 	private EventListener listener;
 	private boolean running = false;
+	private int headerSize = 10;
 	
 	public Connection(Socket socket, int id) {
 		this.socket = socket;
@@ -22,9 +26,10 @@ public class Connection implements Runnable{
 		System.out.println(this.id);
 		
 		try {
-			out = new ObjectOutputStream(socket.getOutputStream());
-			in = new ObjectInputStream(socket.getInputStream());
-			listener = new EventListener();
+			this.out = new ObjectOutputStream(socket.getOutputStream());
+			this.in = new BufferedInputStream(socket.getInputStream());
+			this.listener = new EventListener();
+			this.serializer = new Serializer(this.headerSize);
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -36,13 +41,21 @@ public class Connection implements Runnable{
             running = true;
             			
 			while(running) {
-				try {
-                    Object data = in.readObject();
-                    System.out.println("NEW DATA!");
-					listener.received(data, this);
-				}catch(ClassNotFoundException e) {
-					e.printStackTrace();
+				byte[] header = new byte[this.headerSize];
+				this.in.read(header);
+
+				if (header == new byte[this.headerSize]) {
+					continue;
 				}
+
+				int length = this.serializer.getLength(header);
+
+				byte[] data = new byte[length];
+				this.in.read(data);
+
+				Event event = this.serializer.jsonToEvent(this.serializer.bytesToText(data));
+					
+				listener.received(event, this);
 			}
 		}catch(IOException e) {
 			e.printStackTrace();

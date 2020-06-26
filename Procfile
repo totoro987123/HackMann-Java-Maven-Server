@@ -1,1 +1,2 @@
-web: java target/classes/server/Main
+web: cd target/classes/com/hackmann/server/
+web: java target/classes/com/hackmann/server/Main
