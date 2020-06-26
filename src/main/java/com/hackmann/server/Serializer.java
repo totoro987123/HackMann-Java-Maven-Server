@@ -35,6 +35,10 @@ public class Serializer {
         return new String(bytes);
     }
 
+    public byte[] textToBytes(String string) {
+        return string.getBytes();
+    }
+
     public JSONObject stringToJSON(String string) {
         return new JSONObject(string);
     }
@@ -53,9 +57,16 @@ public class Serializer {
         return null;
     }
 
+    public String eventToJson(Event event) {
+        return this.gson.toJson(event);
+    }
 
     public Event bytesToEvent(byte[] bytes){
         return this.jsonToEvent(this.bytesToText(bytes));
+    }
+
+    public byte[] eventToBytes(Event event){
+        return this.textToBytes(this.eventToJson(event));
     }
 
 }
