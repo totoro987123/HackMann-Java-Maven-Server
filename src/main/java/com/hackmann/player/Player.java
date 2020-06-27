@@ -15,7 +15,7 @@ public class Player {
     private Connection connection = null; //server id and socket
 
     private long score = 0;
-    private boolean  gameOver = false;
+    private boolean gameOver = false;
 
     public Player(Connection connection) { //when a new player enters
         this.connection = connection;
@@ -85,5 +85,6 @@ public class Player {
             MatchMaker.matchMaker.removePlayer(this);
         }
         System.out.println("\n"+this.username + " has disconnected from the server.\n");
+        //Wins the game
     }
 }

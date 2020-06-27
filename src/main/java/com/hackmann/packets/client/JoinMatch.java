@@ -5,7 +5,7 @@ import com.hackmann.player.Player;
 
 public class JoinMatch implements Event {
 
-    private String className = "ConfirmUsernameChange";
+    private String className = "JoinMatch";
 
     public String otherPlayerName;
     public String songName;

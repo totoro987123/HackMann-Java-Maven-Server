@@ -20,6 +20,9 @@ public class Match implements Runnable {
 
     public void start() {
         for (Player player : this.players) {
+            player.setGameEnd(false);
+            player.changeScore(-player.score());
+
             JoinMatch event = new JoinMatch();
             event.otherPlayerName = player.getOtherPlayer(this.players).getUsername();
             event.songName = this.song.getName();

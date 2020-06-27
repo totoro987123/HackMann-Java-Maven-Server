@@ -18,6 +18,8 @@ public class MatchMaker implements Runnable{ //handles the matchmaking of the pl
 
     @Override
 	public void run() {
+        this.running = true;
+
         while (this.running) {
             if (playerStack.size() >= 2) {
                 ArrayList<Player> players = new ArrayList<Player>();
@@ -28,6 +30,8 @@ public class MatchMaker implements Runnable{ //handles the matchmaking of the pl
                 match.start();
             }
         }
+
+        this.stop();
     }
 
     public void addPlayerToQueue(Player player){
