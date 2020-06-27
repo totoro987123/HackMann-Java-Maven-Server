@@ -46,7 +46,7 @@ public class Serializer {
     public Event jsonToEvent(String json) {
         JSONObject jsonObject = this.stringToJSON(json);
         try {
-            return (Event) this.gson.fromJson(json, Class.forName("com.hackmann.packets."+jsonObject.getString("className")));
+            return (Event) this.gson.fromJson(json, Class.forName("com.hackmann.packets.server."+jsonObject.getString("className")));
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

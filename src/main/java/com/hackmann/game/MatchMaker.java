@@ -23,6 +23,9 @@ public class MatchMaker implements Runnable{ //handles the matchmaking of the pl
                 ArrayList<Player> players = new ArrayList<Player>();
                 players.add(playerStack.pop());
                 players.add(playerStack.pop());
+
+                Match match = new Match(players);
+                match.start();
             }
         }
     }

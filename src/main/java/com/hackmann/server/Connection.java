@@ -89,7 +89,7 @@ public class Connection implements Runnable{
 			finalData[i] = bytesHeader[i];
 		}
 		for (int i = 10; i < finalData.length; i++){
-			finalData[i] = bytesHeader[i];
+			finalData[i] = data[i-10];
 		}
 
 		try {
