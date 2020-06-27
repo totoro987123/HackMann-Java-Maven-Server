@@ -1,21 +1,37 @@
 package com.hackmann.player;
 
 import com.hackmann.server.*;
+
+import java.util.ArrayList;
+
 import com.hackmann.game.*;
+import com.hackmann.packets.client.*;
+import com.hackmann.packets.Event;
 
 public class Player {
 
-    private int score = 0;
     private PlayerState state = PlayerState.Lobby;
     private String username = "";
     private Connection connection = null; //server id and socket
 
+    private int score = 0;
+    private boolean  gameOver = false;
+
     public Player(Connection connection) { //when a new player enters
         this.connection = connection;
+        this.username = "Player "+connection.id;
     }
 
     public void changeScore(int amount) {
-        this.score += score;
+        this.score += amount;
+        if (this.score < 0){
+            this.score = 0;
+        }
+        System.out.println("\tChanged the players score by " + Integer.toString(amount) + " to get a total of " + this.score + ".");
+    }
+
+    public int score() {
+        return this.score;
     }
 
     public String getUsername() {
@@ -23,26 +39,51 @@ public class Player {
     }
 
     public void setUsername(String name){
+        System.out.println("\t" + this.username + " has changed their username to " + name + ".");
         this.username = name;
+
+        Event event = new ConfirmUsernameChange();
+        this.connection.send(event);
     }
 
-    public int getScore() {
-        return this.score;
+    public void setGameEnd(boolean bool){
+        this.gameOver = bool;
+    }
+
+    public boolean getGameEnd(){
+        return this.gameOver;
     }
 
     public Connection getConnection(){
         return this.connection;
     }
 
+    public Player getOtherPlayer(ArrayList<Player> players){
+        for (Player player : players){
+            if (player != this){
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public void setState(PlayerState state){
+        this.state = state;
+        System.out.println("\t" + this.username + " has changed their state to "+ state + ".");
+    }
+
     public void joinGame(){
-        this.state = PlayerState.Pending;
-        MatchMaker.matchMaker.addPlayerToQueue(this);
+        if (this.state == PlayerState.Lobby){
+            MatchMaker.matchMaker.addPlayerToQueue(this);
+            this.setState(PlayerState.Queue);
+        }
     }
 
     public void disconnect() {
         this.connection.close();
-        if (this.state == PlayerState.Pending) {
+        if (this.state == PlayerState.Queue) {
             MatchMaker.matchMaker.removePlayer(this);
         }
+        System.out.println("\n"+this.username + " has disconnected from the server.\n");
     }
 }

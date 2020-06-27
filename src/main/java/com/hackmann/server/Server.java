@@ -30,10 +30,10 @@ public class Server implements Runnable{
 
 	@Override
 	public void run() {
-		running = true;
-		System.out.println("Server started on port: " + port);
+		this.running = true;
+		System.out.println("\n\nServer started on port: " + port + "\n");
 		
-		while(running) {
+		while(this.running) {
 			try {
 				Socket socket = serverSocket.accept();
 				initSocket(socket);
@@ -41,7 +41,7 @@ public class Server implements Runnable{
 				e.printStackTrace();
 			}
 		}
-		shutdown();
+		this.shutdown();
 	}
 	
 	private void initSocket(Socket socket) {

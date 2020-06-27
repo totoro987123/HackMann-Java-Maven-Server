@@ -1,7 +1,8 @@
 package com.hackmann.game;
 
 import com.hackmann.player.*;
-
+import com.hackmann.packets.client.*;
+import com.hackmann.packets.Event;
 import java.util.*;
 
 
@@ -28,6 +29,11 @@ public class MatchMaker implements Runnable{ //handles the matchmaking of the pl
 
     public void addPlayerToQueue(Player player){
         playerStack.push(player);
+        System.out.println("\t"+player.getUsername() + " has joined the queue for the game.");
+        System.out.println("\tThere are " + playerStack.size() + " players in the queue.");
+
+        Event event = new ConfirmQueueJoin();
+        player.getConnection().send(event);
     }
     
     public void stop(){

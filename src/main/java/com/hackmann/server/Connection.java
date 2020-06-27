@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.hackmann.packets.Event;
+import com.hackmann.player.*;
 
 public class Connection implements Runnable{
 	
@@ -22,8 +23,6 @@ public class Connection implements Runnable{
 	public Connection(Socket socket, int id) {
 		this.socket = socket;
 		this.id = id;
-
-		System.out.println(this.id);
 		
 		try {
 			this.out = new ObjectOutputStream(socket.getOutputStream());
@@ -59,6 +58,7 @@ public class Connection implements Runnable{
 			}
 		}catch(IOException e) {
 			e.printStackTrace();
+			PlayerHandler.getPlayer(this).disconnect();
 		}
 	}
 	

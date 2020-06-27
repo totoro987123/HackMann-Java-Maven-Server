@@ -4,10 +4,10 @@ import com.hackmann.player.*;
 
 public class EventListener {
 	
-	public void received(Event p, Connection connection) {
-        Player player = PlayerHandler.getPlayer(connection);
+        public void received(Event p, Connection connection) {
+                
+                Player player = PlayerHandler.getPlayer(connection);
 
-        p.run(player);
-
-	}
+                p.run(player);
+        }
 }

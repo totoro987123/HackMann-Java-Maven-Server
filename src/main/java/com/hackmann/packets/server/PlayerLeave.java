@@ -1,6 +1,8 @@
-package com.hackmann.packets;
+package com.hackmann.packets.server;
 
 import com.hackmann.player.Player;
+import com.hackmann.packets.Event;
+
 
 public class PlayerLeave implements Event {
     
@@ -12,7 +14,6 @@ public class PlayerLeave implements Event {
 
     @Override
     public void run(Player player){
-        System.out.println("Player: " + player.getConnection().id + " has been disconnected!");
         player.disconnect();
     }
 }

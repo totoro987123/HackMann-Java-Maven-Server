@@ -1,6 +1,8 @@
-package com.hackmann.packets;
+package com.hackmann.packets.server;
 
 import com.hackmann.player.Player;
+import com.hackmann.packets.Event;
+
 
 public class PlayerJoin implements Event {
     
@@ -12,6 +14,6 @@ public class PlayerJoin implements Event {
 
     @Override
     public void run(Player player){
-        System.out.println("Player: " + player.getConnection().id + " has connected!");
+        System.out.println("\n" + player.getUsername() + " has connected to the server!\n");
     }
 }
