@@ -2,7 +2,7 @@ package com.hackmann.server;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 import com.hackmann.packets.Event;
@@ -12,7 +12,7 @@ public class Connection implements Runnable{
 	
 	private Socket socket;
 	private BufferedInputStream in;
-	private ObjectOutputStream out;
+	private OutputStream out;
 	private Serializer serializer;
 	
 	public int id;
@@ -25,7 +25,7 @@ public class Connection implements Runnable{
 		this.id = id;
 		
 		try {
-			this.out = new ObjectOutputStream(socket.getOutputStream());
+			this.out = socket.getOutputStream();
 			this.in = new BufferedInputStream(socket.getInputStream());
 			this.listener = new EventListener();
 			this.serializer = new Serializer(this.headerSize);
@@ -93,7 +93,7 @@ public class Connection implements Runnable{
 		}
 
 		try {
-			out.writeObject(finalData);
+			out.write(finalData);
 			out.flush();
 		}catch(IOException e) {
 			e.printStackTrace();
