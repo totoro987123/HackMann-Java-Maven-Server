@@ -14,7 +14,7 @@ public class Player {
     private String username = "";
     private Connection connection = null; //server id and socket
 
-    private int score = 0;
+    private long score = 0;
     private boolean  gameOver = false;
 
     public Player(Connection connection) { //when a new player enters
@@ -22,15 +22,15 @@ public class Player {
         this.username = "Player "+connection.id;
     }
 
-    public void changeScore(int amount) {
+    public void changeScore(long amount) {
         this.score += amount;
         if (this.score < 0){
             this.score = 0;
         }
-        System.out.println("\tChanged the players score by " + Integer.toString(amount) + " to get a total of " + this.score + ".");
+        System.out.println("\tChanged the players score by " + Long.toString(amount) + " to get a total of " + this.score + ".");
     }
 
-    public int score() {
+    public long score() {
         return this.score;
     }
 

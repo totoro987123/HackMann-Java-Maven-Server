@@ -9,7 +9,7 @@ public class JoinMatch implements Event {
 
     public String otherPlayerName;
     public String songName;
-    public int maxPoints;
+    public long maxPoints;
 
     public JoinMatch(){}
 
