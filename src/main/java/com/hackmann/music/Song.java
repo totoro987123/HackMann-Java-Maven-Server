@@ -3,9 +3,9 @@ package com.hackmann.music;
 public class Song {
     
     private String name;
-    private long scorablePoints;
+    private int scorablePoints;
 
-    public Song(String name, long scorablePoints){
+    public Song(String name, int scorablePoints){
         this.name = name;
         this.scorablePoints = scorablePoints;
     }
@@ -14,7 +14,7 @@ public class Song {
         return this.name;
     }
 
-    public long getScorablePoints(){
+    public int getScorablePoints(){
         return this.scorablePoints;
     }
 }

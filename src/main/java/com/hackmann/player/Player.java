@@ -13,8 +13,9 @@ public class Player {
     private PlayerState state = PlayerState.Lobby;
     private String username = "";
     private Connection connection = null; //server id and socket
+    private Match match;
 
-    private long score = 0;
+    private int score = 0;
     private boolean gameOver = false;
 
     public Player(Connection connection) { //when a new player enters
@@ -22,20 +23,32 @@ public class Player {
         this.username = "Player "+connection.id;
     }
 
-    public void changeScore(long amount) {
+    public void changeScore(int amount) {
+        if (amount == 0){
+            return;
+        }
+
         this.score += amount;
         if (this.score < 0){
             this.score = 0;
         }
-        System.out.println("\tChanged the players score by " + Long.toString(amount) + " to get a total of " + this.score + ".");
+        System.out.println("\tChanged the players score by " + Integer.toString(amount) + " to get a total of " + this.score + ".");
     }
 
-    public long score() {
+    public int score() {
         return this.score;
     }
 
     public String getUsername() {
         return this.username;
+    }
+
+    public Match getMatch(){
+        return this.match;
+    }
+
+    public void setMatch(Match match){
+        this.match = match;
     }
 
     public void setUsername(String name){

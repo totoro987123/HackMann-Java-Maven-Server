@@ -2,7 +2,7 @@ package com.hackmann.packets.server;
 
 import com.hackmann.player.Player;
 import com.hackmann.packets.Event;
-
+import com.hackmann.packets.client.*;
 
 public class UpdateScore implements Event {
     
@@ -17,5 +17,10 @@ public class UpdateScore implements Event {
     @Override
     public void run(Player player){
         player.changeScore(this.amount);
+
+        UpdateMatch event = new UpdateMatch();
+        event.yourScore = player.score();
+        event.otherPlayerScore = player.getOtherPlayer(player.getMatch().getPlayers()).score();
+        player.getConnection().send(event);
     }
 }

@@ -18,8 +18,13 @@ public class Match implements Runnable {
         this.song = SongHandler.pickRandomSong();
     }
 
+    public ArrayList<Player> getPlayers(){
+        return this.players;
+    }
+
     public void start() {
         for (Player player : this.players) {
+            player.setMatch(this);
             player.setGameEnd(false);
             player.changeScore(-player.score());
 
@@ -49,19 +54,22 @@ public class Match implements Runnable {
         this.running = true;
 
         while (this.running){
-            for (Player player : this.players) {
+            /*for (Player player : this.players) {
                 UpdateMatch event = new UpdateMatch();
                 event.yourScore = player.score();
                 event.otherPlayerScore = player.getOtherPlayer(this.players).score();
                 player.getConnection().send(event);
-            }
+            }*/
 
+            boolean endGame = true;
             for (Player player : this.players) {
                 if (!player.getGameEnd()){
-                    continue;
+                    endGame = false;
                 }
             }
-            this.endGame();
+            if (endGame){
+                this.endGame();
+            }
         }		
         
         this.stop();
