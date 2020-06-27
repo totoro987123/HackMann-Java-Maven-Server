@@ -53,7 +53,7 @@ public class Connection implements Runnable{
 				byte[] data = new byte[length];
 				this.in.read(data);
 
-				Event event = this.serializer.jsonToEvent(this.serializer.bytesToText(data));
+				Event event = this.serializer.bytesToEvent(data);
 					
 				listener.received(event, this);
 			}
@@ -73,9 +73,27 @@ public class Connection implements Runnable{
 		}
 	}
 	
-	public void sendObject(Object packet) {
+	public void send(Event event) {
+		byte[] data = this.serializer.eventToBytes(event);
+		int length = data.length;
+
+		String header = Integer.toString(length);
+        for (int i = header.length(); i < this.headerSize; i++){
+            header = header + "-";
+		}
+		
+		byte[] bytesHeader = header.getBytes();
+
+		byte[] finalData = new byte[bytesHeader.length + data.length];
+		for (int i = 0; i < bytesHeader.length; i++){
+			finalData[i] = bytesHeader[i];
+		}
+		for (int i = 10; i < finalData.length; i++){
+			finalData[i] = bytesHeader[i];
+		}
+
 		try {
-			out.writeObject(packet);
+			out.writeObject(finalData);
 			out.flush();
 		}catch(IOException e) {
 			e.printStackTrace();

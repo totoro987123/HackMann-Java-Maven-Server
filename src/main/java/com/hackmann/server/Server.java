@@ -46,7 +46,6 @@ public class Server implements Runnable{
 	
 	private void initSocket(Socket socket) {
 		Connection connection = new Connection(socket,id);
-		ConnectionHandler.connections.put(id,connection);
 		new Thread(connection).start();
 		this.id++;
 	}
