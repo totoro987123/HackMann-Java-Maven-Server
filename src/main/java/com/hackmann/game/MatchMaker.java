@@ -18,9 +18,9 @@ public class MatchMaker implements Runnable{ //handles the matchmaking of the pl
 
     @Override
 	public void run() {
-        this.running = true;
-
+        this.running=true;
         while (this.running) {
+            //System.out.println("running");
             if (playerStack.size() >= 2) {
                 ArrayList<Player> players = new ArrayList<Player>();
                 players.add(playerStack.pop());
@@ -30,7 +30,6 @@ public class MatchMaker implements Runnable{ //handles the matchmaking of the pl
                 match.start();
             }
         }
-
         this.stop();
     }
 
@@ -42,13 +41,13 @@ public class MatchMaker implements Runnable{ //handles the matchmaking of the pl
         Event event = new ConfirmQueueJoin();
         player.getConnection().send(event);
     }
-    
+
     public void stop(){
         this.running = false;
     }
-    
+
     public void removePlayer(Player player) {
         this.playerStack.remove(player);
     }
-    
+
 }

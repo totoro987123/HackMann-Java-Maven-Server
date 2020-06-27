@@ -9,21 +9,21 @@ import com.hackmann.packets.Event;
 import com.hackmann.player.*;
 
 public class Connection implements Runnable{
-	
+
 	private Socket socket;
 	private BufferedInputStream in;
 	private OutputStream out;
 	private Serializer serializer;
-	
+
 	public int id;
 	private EventListener listener;
 	private boolean running = false;
 	private int headerSize = 10;
-	
+
 	public Connection(Socket socket, int id) {
 		this.socket = socket;
 		this.id = id;
-		
+
 		try {
 			this.out = socket.getOutputStream();
 			this.in = new BufferedInputStream(socket.getInputStream());
@@ -38,7 +38,7 @@ public class Connection implements Runnable{
 	public void run() {
 		try {
             running = true;
-            			
+
 			while(running) {
 				byte[] header = new byte[this.headerSize];
 				this.in.read(header);
@@ -53,7 +53,7 @@ public class Connection implements Runnable{
 				this.in.read(data);
 
 				Event event = this.serializer.bytesToEvent(data);
-					
+
 				listener.received(event, this);
 			}
 		}catch(IOException e) {
@@ -61,7 +61,7 @@ public class Connection implements Runnable{
 			PlayerHandler.getPlayer(this).disconnect();
 		}
 	}
-	
+
 	public void close() {
 		try {
 			running = false;
@@ -72,7 +72,7 @@ public class Connection implements Runnable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void send(Event event) {
 		byte[] data = this.serializer.eventToBytes(event);
 		int length = data.length;
@@ -81,7 +81,7 @@ public class Connection implements Runnable{
         for (int i = header.length(); i < this.headerSize; i++){
             header = header + "-";
 		}
-		
+
 		byte[] bytesHeader = header.getBytes();
 
 		byte[] finalData = new byte[bytesHeader.length + data.length];
@@ -91,7 +91,7 @@ public class Connection implements Runnable{
 		for (int i = 10; i < finalData.length; i++){
 			finalData[i] = data[i-10];
 		}
-
+        System.out.println(new String(finalData));
 		try {
 			out.write(finalData);
 			out.flush();

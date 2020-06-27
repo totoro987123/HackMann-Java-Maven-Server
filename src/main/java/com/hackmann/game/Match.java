@@ -17,12 +17,12 @@ public class Match implements Runnable {
         this.players = players;
         this.song = SongHandler.pickRandomSong();
     }
-
+    public ArrayList<Player> getPlayers () {
+        return this.players;
+    }
     public void start() {
         for (Player player : this.players) {
-            player.setGameEnd(false);
-            player.changeScore(-player.score());
-
+            player.setMatch(this);
             JoinMatch event = new JoinMatch();
             event.otherPlayerName = player.getOtherPlayer(this.players).getUsername();
             event.songName = this.song.getName();
@@ -45,28 +45,34 @@ public class Match implements Runnable {
         for (Player player : this.players) {
             player.getConnection().send(new StartMatch());
         }
+        System.out.println("Match started");
 
         this.running = true;
 
         while (this.running){
-            for (Player player : this.players) {
+            /*for (Player player : this.players) {
                 UpdateMatch event = new UpdateMatch();
                 event.yourScore = player.score();
                 event.otherPlayerScore = player.getOtherPlayer(this.players).score();
+                System.out.println(""+event.yourScore+" "+event.otherPlayerScore);
                 player.getConnection().send(event);
-            }
-
+                System.out.println("updated match");
+            }*/
+            boolean endGame = true;
             for (Player player : this.players) {
-                if (!player.getGameEnd()){
-                    continue;
+                if (!player.getGameEnd()) {
+                    endGame = false;
+                    break;
                 }
             }
-            this.endGame();
-        }		
-        
+            if (endGame) {
+                this.endGame();
+            }
+        }
+
         this.stop();
     }
-    
+
     public void endGame(){
         Player winner = null;
         for (Player player : this.players){
@@ -85,6 +91,6 @@ public class Match implements Runnable {
     }
 
 	public void stop() {
-        this.running = false;	
+        this.running = false;
 	}
 }

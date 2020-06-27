@@ -13,24 +13,32 @@ public class Player {
     private PlayerState state = PlayerState.Lobby;
     private String username = "";
     private Connection connection = null; //server id and socket
-
-    private long score = 0;
-    private boolean gameOver = false;
+    private Match match;
+    private int score = 0;
+    private boolean  gameOver = false;
 
     public Player(Connection connection) { //when a new player enters
         this.connection = connection;
         this.username = "Player "+connection.id;
     }
 
-    public void changeScore(long amount) {
+    public void changeScore(int amount) {
+        if (amount==0) {
+            return;
+        }
         this.score += amount;
         if (this.score < 0){
             this.score = 0;
         }
-        System.out.println("\tChanged the players score by " + Long.toString(amount) + " to get a total of " + this.score + ".");
+        System.out.println("\tChanged the players score by " + Integer.toString(amount) + " to get a total of " + this.score + ".");
     }
-
-    public long score() {
+    public Match getMatch() {
+        return this.match;
+    }
+    public void setMatch(Match match) {
+        this.match = match;
+    }
+    public int score() {
         return this.score;
     }
 
@@ -85,6 +93,5 @@ public class Player {
             MatchMaker.matchMaker.removePlayer(this);
         }
         System.out.println("\n"+this.username + " has disconnected from the server.\n");
-        //Wins the game
     }
 }

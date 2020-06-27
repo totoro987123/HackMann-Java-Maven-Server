@@ -8,8 +8,8 @@ public class UpdateMatch implements Event {
 
     private String className = "UpdateMatch";
 
-    public long yourScore;
-    public long otherPlayerScore;
+    public int yourScore;
+    public int otherPlayerScore;
 
     public UpdateMatch(){}
 

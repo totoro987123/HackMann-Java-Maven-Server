@@ -4,7 +4,7 @@ import com.hackmann.packets.Event;
 import com.hackmann.player.Player;
 
 public class SetGameEnd implements Event {
-    
+
     private String className;
 
     public SetGameEnd(String className) {
@@ -14,5 +14,6 @@ public class SetGameEnd implements Event {
     @Override
     public void run(Player player){
         player.setGameEnd(true);
+        System.out.println(player.getUsername()+" has set their game end to true.");
     }
 }
