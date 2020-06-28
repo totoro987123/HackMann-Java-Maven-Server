@@ -23,6 +23,9 @@ public class Match implements Runnable {
     public void start() {
         for (Player player : this.players) {
             player.setMatch(this);
+            player.setGameEnd(false);
+            player.changeScore(-player.score());
+            player.setState(PlayerState.In_Game);
             JoinMatch event = new JoinMatch();
             event.otherPlayerName = player.getOtherPlayer(this.players).getUsername();
             event.songName = this.song.getName();
@@ -60,32 +63,37 @@ public class Match implements Runnable {
             }*/
             boolean endGame = true;
             for (Player player : this.players) {
+                System.out.println(player.getUsername()+" "+Boolean.toString(player.getGameEnd()));
                 if (!player.getGameEnd()) {
                     endGame = false;
                     break;
                 }
             }
+
             if (endGame) {
-                this.endGame();
+                Player winner = null;
+                for (Player player : this.players){
+                    if (winner == null || player.score() > winner.score()){
+                        winner = player;
+                    }
+                }
+                this.endGame(winner);
             }
         }
 
         this.stop();
     }
 
-    public void endGame(){
-        Player winner = null;
-        for (Player player : this.players){
-            if (winner == null || player.score() > winner.score()){
-                winner = player;
-            }
-        }
-
-        for (Player player : this.players){
+    public void endGame(Player winner){
+        System.out.println("end game");
+        for (Player player : this.players) {
+            System.out.println("end game for "+player.toString());
             EndMatch event = new EndMatch();
             event.winnerName = winner.getUsername();
+            player.setState(PlayerState.Lobby);
             player.getConnection().send(event);
         }
+
 
         this.stop();
     }

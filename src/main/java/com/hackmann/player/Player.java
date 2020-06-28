@@ -92,6 +92,9 @@ public class Player {
         if (this.state == PlayerState.Queue) {
             MatchMaker.matchMaker.removePlayer(this);
         }
+        if (this.match != null ) {
+            this.match.endGame(this.getOtherPlayer(this.match.getPlayers()));
+        }
         System.out.println("\n"+this.username + " has disconnected from the server.\n");
     }
 }

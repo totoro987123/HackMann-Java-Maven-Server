@@ -91,7 +91,6 @@ public class Connection implements Runnable{
 		for (int i = 10; i < finalData.length; i++){
 			finalData[i] = data[i-10];
 		}
-        System.out.println(new String(finalData));
 		try {
 			out.write(finalData);
 			out.flush();
